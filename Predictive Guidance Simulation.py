@@ -494,7 +494,7 @@ def update(frame):
         spatial_noise = np.random.normal(
             0.0,
             noise_sd,
-            size=3.    #has to do for x,y,z independently
+            size=3    #has to do for x,y,z independently
         )
 
         final_noisy_pt = (
