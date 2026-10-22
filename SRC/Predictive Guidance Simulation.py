@@ -447,7 +447,12 @@ def init():
 
 
 def update(frame):
-
+    """
+    Update the animation for the given frame index.
+    This function is called by FuncAnimation for each frame of the animation.
+    It updates the target position, generates noisy measurements, updates the historical and recent clouds,
+    performs the local linear fit to estimate velocity, updates the missile position and trail, and updates the plot objects accordingly.
+    """
     t_now = times[frame]
 
     px, py, pz = target_states[frame]
