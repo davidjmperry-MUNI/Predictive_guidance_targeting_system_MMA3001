@@ -142,7 +142,7 @@ The predicted target motion is used to calculate a potential interception point 
 
 This component is a simplified mathematical demonstration, not a validated physical interception model.
 
-## 5. Validation of simulation results
+## 4. Validation of simulation results
 The simulation is validated by checking that the generated aircraft trajectory remains continuous and smooth throughout the straight and curved flight segments, including their transitions.
 
 Estimated velocity components are compared with the known true velocities to assess the effect of noisy position measurements and timestamp uncertainty.
