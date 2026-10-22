@@ -1,0 +1,88 @@
+# Past Dataset: Predictive Guidance Simulation
+
+## Flight Path Parameters
+
+- Straight_time: 20 seconds
+- curve_time: 5 seconds
+- Straight_time2: 20 seconds
+- targ_vel: 1000 m/s
+- turn_angle: pi/2 radians
+- yz_angle: 0.5 radians
+- aircraft_start_loc: [-35000, -20000, 21000] metres
+
+## Simulation Parameters
+
+- tmax: 45 seconds
+- playback_time: 25 seconds
+- dt: 0.1 seconds
+- Steps: 20000
+- padding: 0.1
+
+## Sensor and Measurement Parameters
+
+- points_per_step: 9
+- noise_sd: 10.0 metres
+- time_noise_sd: 0.01 seconds
+- recent_window: 1 second
+- projection_time: 15 seconds
+
+## Missile Simulation Parameters
+
+- missile_speed: 1300 m/s
+- missile_start: [0.0, 0.0, 0.0] metres
+- hit_radius: 10.0 metres
+- missile_launch_delay: 3.0 seconds
+
+## Derived Dataset Information
+
+- Simulation time samples are generated from 0 seconds up to, but not including, 45 seconds.
+- The simulation time step is 0.1 seconds.
+- The target trajectory contains an initial straight segment, a curved segment, and a second straight segment.
+- The target's true positions are generated before noisy measurements are produced.
+- Ground-truth velocity is calculated using a finite-difference gradient of the true trajectory.
+- Each animation frame generates 9 noisy position measurements.
+- Spatial noise is independently sampled for the X, Y, and Z coordinates from a Gaussian distribution with a standard deviation of 10 metres.
+- Timestamp noise is sampled from a Gaussian distribution with a standard deviation of 0.01 seconds.
+- Noisy measurement timestamps are constrained to be non-negative.
+- The historical point cloud retains measurements from all processed animation frames.
+- The recent point cloud retains measurements from the previous 1 second of simulation time, based on the actual frame times.
+- Local linear fitting is used to estimate target velocity and position from recent measurements.
+- The velocity log records estimated and ground-truth velocity components.
+- The simulation attempts to intercept the target using a constant-speed missile model.
+- The animation displays the target trajectory, noisy measurements, recent measurements, projected position, missile position, missile trail, and aim point.
+
+## Output Files
+
+### scattered_points.csv
+
+Contains the generated noisy position measurements.
+
+Columns:
+- t_actual: Actual simulation time associated with the measurement, in seconds.
+- t_noisy: Noisy measurement timestamp, in seconds.
+- x: Measured X coordinate, in metres.
+- y: Measured Y coordinate, in metres.
+- z: Measured Z coordinate, in metres.
+
+### velocity_estimates.csv
+
+Contains estimated and ground-truth velocity components.
+
+Columns:
+- t: Simulation time, in seconds.
+- vx_est: Estimated X velocity, in m/s.
+- vy_est: Estimated Y velocity, in m/s.
+- vz_est: Estimated Z velocity, in m/s.
+- vx_true: Ground-truth X velocity, in m/s.
+- vy_true: Ground-truth Y velocity, in m/s.
+- vz_true: Ground-truth Z velocity, in m/s.
+
+## Important Notes
+
+- The CSV files are written after the animation window closes.
+- The number of saved measurements depends on the animation frames actually processed.
+- The number of velocity estimates depends on when sufficient distinct timestamps are available for the local linear fit.
+- Missile interception is evaluated against the true target position, not the noisy measurements.
+- The configured missile hit radius is 10 metres.
+- The simulation reports whether an intercept occurred and, if not, the closest recorded approach.
+- The listed parameters describe this historical configuration and should not be assumed to apply to later datasets.
