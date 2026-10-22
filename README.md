@@ -19,10 +19,7 @@ The project uses local linear least-squares fitting to estimate the aircraft's v
 5. Sensitivity analysis
 6. Limitations
 7. Getting started
-8. Repository layout
-9. Testing, documentation and reproducibility
-10. AI use
-11. Licence
+
 
 ## 1. Engineering problem
 
@@ -145,22 +142,16 @@ The predicted target motion is used to calculate a potential interception point 
 
 This component is a simplified mathematical demonstration, not a validated physical interception model.
 
-## 4. Validation and results
+## 5. Validation of simulation results
+The simulation is validated by checking that the generated aircraft trajectory remains continuous and smooth throughout the straight and curved flight segments, including their transitions.
 
-The known simulated trajectory provides ground truth for evaluating the numerical methods.
+Estimated velocity components are compared with the known true velocities to assess the effect of noisy position measurements and timestamp uncertainty.
 
-The primary validation should compare the estimated velocity and predicted position with their corresponding true values at the same times.
+Interception performance is evaluated by recording whether the interceptor reaches the aircraft within the specified hit radius, the interception time, and the minimum separation when no interception occurs.
 
-Recommended evaluation metrics include:
+Sensitivity analysis can be performed by varying measurement noise, measurement density, and other simulation parameters to investigate their effects on estimation accuracy and interception performance.
 
-- **Velocity error:** Euclidean difference between the estimated and true velocity vectors, in m/s.
-- **Position prediction error:** Euclidean distance between the predicted and true positions, in metres.
-- **Root mean squared error (RMSE):** A summary measure that penalises larger estimation errors.
-- **Runtime:** Time required to process observations and produce estimates.
-
-A baseline method should also be evaluated, such as finite-difference velocity estimation from consecutive observations. Comparing this baseline with local linear least-squares fitting helps determine whether the additional fitting procedure improves accuracy.
-
-Results should be reported for multiple noise levels and, where appropriate, different estimation-window durations. Quantitative conclusions should be added after these experiments have been run.
+Results demonstrate the behaviour of the implemented model under its assumptions; they do not establish performance under real-world flight conditions.
 
 ## 5. Sensitivity analysis
 
@@ -175,7 +166,6 @@ Potential investigations include:
 - Comparing straight and curved portions of the trajectory.
 - Investigating how prediction error changes with forecast horizon.
 
-The purpose is to determine which factors have the greatest effect on numerical accuracy and to identify trade-offs between noise reduction, responsiveness to manoeuvres and computational cost.
 
 ## 6. Limitations
 
@@ -242,80 +232,4 @@ Replace the placeholder filename with the actual name of the main Python script.
 
 The simulation can export measurement observations and velocity estimates to CSV for further analysis. Generated files should be saved in a documented output directory rather than mixed with source code.
 
-## 8. Repository layout
 
-The repository is intended to contain the following structure:
-
-```text
-aircraft-trajectory-project/
-├── README.md
-├── LICENSE
-├── requirements.txt
-├── pyproject.toml
-├── src/
-│   └── trajectory_project/
-│       ├── trajectory.py
-│       ├── measurements.py
-│       ├── estimation.py
-│       └── prediction.py
-├── tests/
-│   ├── test_trajectory.py
-│   ├── test_measurements.py
-│   └── test_estimation.py
-├── scripts/
-│   └── run_simulation.py
-├── results/
-│   ├── plots/
-│   └── tables/
-├── docs/
-└── test_report.md
-```
-
-This is a proposed structure. Files should only be listed as completed project components once they have actually been created.
-
-## 9. Testing, documentation and reproducibility
-
-### Testing
-
-Automated tests should verify that:
-
-- Trajectory generation returns finite three-dimensional positions.
-- Measurement generation produces the expected coordinate shapes.
-- Noise-free observations reproduce the expected reference trajectory.
-- Velocity estimation returns finite values with the correct dimensions.
-- Estimation error behaves as expected under controlled noise-free and noisy conditions.
-- Prediction functions handle invalid inputs and insufficient observations appropriately.
-- CSV exports contain the expected columns and valid data.
-
-Tests can be run using `pytest`:
-
-```bash
-python -m pip install pytest
-pytest -v
-```
-
-The actual test results and any known failures should be recorded in `test_report.md`.
-
-### Documentation
-
-Public functions should include docstrings describing their purpose, parameters, units, return values and relevant assumptions. HTML documentation can be generated using a tool such as `pdoc` once the source code has been organised into importable modules.
-
-### Reproducibility
-
-The repository should include dependency information, documented run instructions and the configuration required to reproduce the principal experiments. Random seeds should be configurable where repeatable noise realisations are required.
-
-The final results should be accompanied by the parameter settings used to produce them.
-
-## 10. AI use
-
-Any use of AI tools during development should be disclosed in accordance with the MMA3001 project requirements.
-
-The reflection should identify which tools were used, the tasks they assisted with, how suggestions and generated code were checked, any errors identified, and which technical decisions remained the student's responsibility.
-
-The final submission should reflect the actual development process and the student's own understanding of the implemented numerical methods.
-
-## 11. Licence
-
-The repository should include a `LICENSE` file specifying the terms under which the original project code may be used and redistributed.
-
-Any third-party code, datasets or other resources must be handled according to their respective licences and permissions.
