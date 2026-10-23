@@ -1,6 +1,6 @@
 # AI use log
 
-Running record for the report's AI reflection (brief section 7). Add an entry whenever AI materially contributes.
+Running record for the report's AI reflection 
 
 | Date | Tool | Task | How I checked it | Outcome | My decision |
 |---|---|---|---|---|---|
